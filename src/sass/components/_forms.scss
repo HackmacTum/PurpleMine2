@@ -565,10 +565,6 @@ label[for=closed] {
 
 .check_box_group {
   display: block;
-  width: 90%;
-  max-height: $check-list-max-height;
-  padding-top: $check-list-offset-top;
-  overflow-y: auto;
 
   label {
     @include check-list;
