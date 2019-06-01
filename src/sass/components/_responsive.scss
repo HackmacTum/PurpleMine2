@@ -206,5 +206,12 @@
         float: none;
       }
     }
+
+    // tm http://localhost:8080/issues/3441
+    .tabular {
+      label {
+        float: left;
+      }
+    }
   }
 }
