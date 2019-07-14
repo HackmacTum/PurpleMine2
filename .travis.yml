@@ -1,15 +1,27 @@
 dist: trusty
 language: node_js
-node_js:
-  - 8
+node_js: [8]
 cache:
   directories:
     - node_modules
-before_install:
-  - rvm install 2.2
-  - rvm use 2.2 --fuzzy
 install:
-  - gem install scss_lint
   - npm install
 script:
-  - npm run lint --silent
+  - npm run build
+before_deploy:
+  - rm -Rf node_modules
+deploy:
+  - provider: s3
+    access_key_id:
+      secure: jyytYNuL6bDEDsZZ488pl3HrB71m/vSn2sPvzV2azwr6irT6IVwKuzqP9ma/EDoCjx3Rfayt1Y1TVZDHFjIll1qdjk3ZZGNH93ThZ43Ph6wmBxGU+qhURK0TTbFr6IlHqjXGmiaompFPisikcF5HPuxy2hymeLOFesA+wvgkOGLzpxQ+JoIcqa3vWKz5TBjMxR4iKDcnv/35Vexqsrrv+JbpFLIxGct8Gds+Z8zs+ipZxZc68K2ys5yTTYym5WyAMNAIlWr1jPgwB3f3GizoLhOGqGkrSgZYeUSqmAF+fjCHPxpYTyUPKWHzdkTAmrk56YaBnJtHBdafPSfTYo8B1E8fEMYHx+UyU3eQqby8aKUknoNGZmUUep1W3SPy9c7jYEDjg5Apa/X7HK77Xam19FEYm4T4jebMjUQ28y908RZnMPGL33F0tWtkGHY7o2+hfVIBDFWgl/reLY6CN1BsL2VC7bHnWTQNjtUun3688CnvIouVphqk2OP4XGAugHJUHOxHlwYnpR00jB2qdDRG7DoRp5KVWDLZ7uNyf4R3QGmKtjvHyq4j+5lzBEL5PJkQT93QSvluYRxnKQxCJ+0baH6IT4vQJBwimnW4gRp06L6Uvt3L7+YoSSt2E9fxWAvdy/pOxdnFl0RVuJbU827vLiEoujQdQUHQSJhE0gR2dFU=
+    secret_access_key:
+      secure: NF5Qp7iXnwcqojCPHKFGk30CwfKp+ZUGjqqYNZ2IthJLFPe9AHq4b/csAQvqOD+AVb5aJH8oANuXyHiO3zg4G6OGThZc9mR+JebDw05xM43/NS3ItvQDBXi7YxAJbOwrjgy/NrAZDWs/QFgmA3jp40eJeYiKFuEZ3Q8tHEWdfg6Zr8lnkL+Iuu7js2fFDFoHYmHArk3k/GdxDsv1iHI6EPI092EHcSKoH7IqwKD5hrupfaZ6RDN2V4zizKciTSZWthWjD2sCJW+7jv3cUCFi70N4ji2DHwRHMKvXROrgT0urbOGgWCPWRgcp2LVRbUttZzJud59RVOjyid+wxFLhv9iL6VzU6nIEcBku3WjjBNZO/2301iKu9VvPhHfS4bB74EiniLuTooBFIhrjXNe/xharyCO7mtf2Cd8bYFvqmwJ4ixolHXeto8IHF0defkMC3eoiOyiUwfVLi+TLYjGF8cgZ0zdXyfzFvGefhUoXA9aeJi0RnZ0xWNa1WUUa7djf7vbl+RftVv5jfBpHZMItHziqdwn9iWR4lYX4kNhbOzeWD+1KRqE6VNY7kpQ3zFGP9btf9yhbL2d0c9U6tIMRnLOOGJZvJ9eKOCLbW1vqBG6Vboc8pcfY1plxtf8RRw49gWBCt0Mdoz27ay01eLLVIAwlGPveEyiaPHmMa+/7qMg=
+    bucket:
+      secure: lVtLveAuYmCo0qdNTfNEEuKW94VOy/54u9A+a1oaLPoC+aKKFXE4HEdRlBP3bEZGendM3b0l6ZAdP7pTw0fR3HcQtXB3EmoH9aK9ISXiaUZEIA+s+ElFyZ62mjSRS6PpGyoZMOC7ouo0jg0PRIOP7Rjc6rd3preID6krRoUSLUk4wc3h4lDjhU6FSn43Pq+8bkQCNz3rZqBY9l9u+QlvU3rupnZxFmGnuElDuqXWV58NlhgeglD+RaLspgNqNzmzbOOs8jvA4sIxkBDce5urISlftrfdnFy2p5Tk5z8K5mtO3O7OZ4jDDqdrEFzimCud1wBpcIFwd0UgOdmnFFcirZ6Pk0w5/M6Ji/+tyGj2QiefRvn274j294e8p0yLop+PWqWkkhvEHr2mbD2fb/FbPnqjGO8haezCLJ1eo7yWkEym6+eFUaxlLeusjnLwm3HvCVsVLAM1W88VrznFdy1ySDG4yz8+XzRz6xsK6Bbp22OuclTvXnNtdNAegv3uXZ1sl6pMm4eCV5QBJj7OtzhF5GOwJuiz2hgzLbPe7YuVHeHGKQYI3I3PK4YMzUs9nkGAmbp1m84kUerUN9nts+Znt+7UL0bA2BUhDzP8i/7KixyOIhO5xX78HQ77UiPIW/fgralYY2s8MYfYfFAtoQILExEynBWWYSxQ1TYSDRbjuZM=
+    region: eu-west-1
+    skip_cleanup: true
+    upload-dir: PurpleMine2
+    on:
+      branch: hackmac
+after_deploy:
+  - ./bin/deployme.sh
